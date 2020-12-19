@@ -43,7 +43,7 @@ from the github repository, the first step is to clone it.
 
 .. code-block:: bash
 
-    git clone https://github.com/Praisebetoscience/dockerhub-webhook.git
+    git clone https://github.com/voltwu/docker-hub-webhook.git
 
 Then install dependencies.
 
