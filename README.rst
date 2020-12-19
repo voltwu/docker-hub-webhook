@@ -70,14 +70,15 @@ Alternatively you can set the ``$DOCKERHOOK_TOKEN`` environment variable with yo
 key.  This will override anything in config.py.
 
 The ``HOOKS`` dict in config.py maps respository names to serverside deploy
-scripts.  Keys are the names of repositories (no namespace), and values are
-the full path to the script to be called, or a relative path to the current
-working directory.
+scripts.  Keys are the names of repositories (no namespace), and value is a dict data type,
+and the ``default`` means that if not matched a tag. Each tag maps a full path to the script to be called, 
+or a relative path to the current working directory.
 
 .. code-block:: python
 
-    HOOKS = {'repo1': '/full/path/to/script.sh',
-             'repo2': 'relative_path_to_script.sh'
+    HOOKS = {
+             'repo1': {'default':'tests_script2.sh','latest':'test_tags_script_latest.sh'},
+             'repo2': {'default':'tests_script.sh','2.0':'test_tags_script.sh'}
             }
 
 
