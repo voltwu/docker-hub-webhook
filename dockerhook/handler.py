@@ -88,9 +88,14 @@ class DockerhubWebhook(object):
         Returns:
             Dict: JSON Response
         """
-        hook = json_data['repository']['name']
-        script_args = shlex.split(app.config['HOOKS'][hook])
-        app.logger.info("Subprocess [%s]: %s", hook, script_args)
+        repname = json_data['repository']['name']
+        tagname = json_data['push_data']['tag']
+        repsDic = app.config['HOOKS'][repname]
+        hk_tag_name = tagname
+        if tagname not in repsDic:
+            hk_tag_name = 'default'
+        script_args = shlex.split(app.config['HOOKS'][repname][hk_tag_name])
+        app.logger.info("Subprocess [%s (tag: %s)]: %s", repname,hk_tag_name, script_args)
 
         try:
             script_process = subprocess.Popen(
@@ -107,11 +112,11 @@ class DockerhubWebhook(object):
             app.logger.error('Exception occured: %s', str(exception))
             app.logger.info('Subprocess failed.')
             res = cls.create_response(
-                'error', '500', '{} failed.'.format(hook))
+                'error', '500', '{} {} failed.'.format(repname,hk_tag_name))
         else:
             # no exception raised.
             res = cls.create_response(
-                'success', '200', '{} deployed.'.format(hook))
+                'success', '200', '{} {} deployed.'.format(repname,hk_tag_name))
             app.logger.info('Script completed successfully.')
 
         cls.callback(res, json_data['callback_url'])

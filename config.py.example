@@ -7,4 +7,7 @@
 APIKEY = 'secret'
 
 # Add your script using the name of your repository as the key
-HOOKS = {'testpush': 'scripts/test.sh'}
+HOOKS = {
+         'repo1': {'default':'tests_script2.sh','latest':'test_tags_script_latest.sh'},
+         'repo2': {'default':'tests_script.sh','2.0':'test_tags_script.sh'}
+        }
